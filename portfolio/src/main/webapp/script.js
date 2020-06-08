@@ -17,7 +17,7 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['I am a builder', 'I am blessed', 'I am grateful', 'I am a creator'];
+      ['A little slope makes up for a lot of y-intercept', 'By Failing to prepare, you are preparing to fail.'];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];

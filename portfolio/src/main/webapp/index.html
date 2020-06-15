@@ -24,12 +24,19 @@
     <b>  Bio: </b>
      I am an avid creator and builder who has started a few projects over the years. Some have grown, some are still growing, and some are in the processes of growing. </br>
 
-    </br></br>
-    
-          <b>Favorite Websites</b> indiehackers.com, youtube.com (Ali Abdaal & PapyFix are my favorite youtubers), reddit.com, messenger is my favorite platform, Google Chat > Slack
+
+
     </br>
-    <button onclick="addRandomGreeting()">Favorite Quote Generator</button>
-    <div id="greeting-container"></div>
+    <div id="quote-container"></div>
+    <script>
+        window.onload = function() {
+            getRandomQuote();
+            console.log('tried to run random function');
+            getData();
+            console.log('get data from servlet')
+        };
+        
+    </script>
     </br></br>
     Goals for my summer at SPS:</br>
     ✅ Build a cool and useful product(s) for the web </br>
@@ -48,7 +55,10 @@
         </div>
         </br>
         
-      
     </div>
+    </br></br></br> <hr>
+    <div id="data-container"></div>
+
+
   </body>
 </html>

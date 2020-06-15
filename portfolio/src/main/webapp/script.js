@@ -15,7 +15,7 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
+function addRandomQuoteManually() {
   const greetings =
       ['A little slope makes up for a lot of y-intercept', 'By Failing to prepare, you are preparing to fail.'];
 
@@ -25,4 +25,18 @@ function addRandomGreeting() {
   // Add it to the page.
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
+}
+
+// Get data from QuoteServlet - Random Quote Generator
+async function getRandomQuote() {
+    const response = await fetch('/quote');
+    const quote = await response.text();
+    document.getElementById('quote-container').innerHTML = "<b>Favorite Quote </b>: " + quote;
+}
+
+// Get data from the DataServlet
+async function getData() {
+    const response = await fetch('/data');
+    const data = await response.text();
+    document.getElementById('data-container').innerHTML =  data;
 }

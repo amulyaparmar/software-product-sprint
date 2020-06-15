@@ -22,14 +22,29 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data")
-public class DataServlet extends HttpServlet {
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Amulya!</h1>");
-  }
+@WebServlet("/quote")
+public class QuoteServlet extends HttpServlet {
+    
+    private List<String> quotes;
+
+    @Override
+    public void init() {
+        quotes = new ArrayList<>();
+        quotes.add(
+            "A little slope makes up for alot of y-intercept");
+        quotes.add(
+            "A good hack for surrounding yourself by influential people, if you can't do that, is reading about them.");
+        quotes.add(
+            "You are where you are. What you do next is more important."
+        );
+        
+    }
+
+    @Override 
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String quote = quotes.get((int) (Math.random() * quotes.size()));
+        response.setContentType("text/html;");
+        response.getWriter().println(quote);    
+    }
 }
-

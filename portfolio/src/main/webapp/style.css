@@ -23,23 +23,4 @@ body {
 .section-intro {
     display: flex;
     height: 100px;
-    overflow: none;
-}
-
-#cursor {
-	display: inline-block;
-	vertical-align: middle;
-	width: 3px;
-	height: 30px;
-	background-color: orange;
-	animation: blink .75s step-end infinite;
-}
-
-@keyframes blink {
-	from, to { 
-		background-color: transparent 
-	}
-	50% { 
-		background-color: orange; 
-	}
 }

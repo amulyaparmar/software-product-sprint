@@ -1,11 +1,9 @@
-
 package com.google.sps.data;
 
 import java.util.Date;
 
 /** Class containing comment and comment identification information */
 public final class Comment {
-
   private final Date postTime;
   private final String name;
   private final String comment;
@@ -27,5 +25,4 @@ public final class Comment {
   public String getComment() {
     return comment;
   }
-
 }

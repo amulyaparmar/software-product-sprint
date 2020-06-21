@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 public class DataServlet extends HttpServlet {
 
   private List<String> comments;
-  
 
   @Override
   public void init() {
@@ -45,19 +44,20 @@ public class DataServlet extends HttpServlet {
   }
 
   private String convertToJson(List<String> comments) {
-    String json = "{";
-    json += "\"comments\": [";
+    StringBuilder sb = new StringBuilder();
+    
+    sb.append("{");
+    sb.append("\"comments\": [\n");
 
-    for(int i=0; i < comments.size(); i++ ) {
-         json += "\"" + comments.get(i) + "\"";
+    for(int i = 0; i < comments.size(); i++) {
+        sb.append(comments.get(i));
 
         if (i != comments.size() - 1) {
-            json += ", ";
+            sb.append(",\n");
         }
     }
-    json += "]}";
-    return json;
+    sb.append("]}");
+    return sb.toString();
   }
-
 }
 

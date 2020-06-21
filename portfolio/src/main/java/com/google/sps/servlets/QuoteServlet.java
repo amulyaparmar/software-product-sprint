@@ -37,8 +37,7 @@ public class QuoteServlet extends HttpServlet {
             "A good hack for surrounding yourself by influential people, if you can't do that, is reading about them.");
         quotes.add(
             "You are where you are. What you do next is more important."
-        );
-        
+        )
     }
 
     @Override 

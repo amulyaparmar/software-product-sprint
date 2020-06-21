@@ -25,4 +25,5 @@ public final class Comment {
   public String getComment() {
     return comment;
   }
+  
 }

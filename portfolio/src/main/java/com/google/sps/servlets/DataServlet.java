@@ -71,6 +71,5 @@ public class DataServlet extends HttpServlet {
     sb.append("]}");
     return sb.toString();
   }
-
 }
 

@@ -38,7 +38,6 @@ public class QuoteServlet extends HttpServlet {
         quotes.add(
             "You are where you are. What you do next is more important."
         );
-        
     }
 
     @Override 

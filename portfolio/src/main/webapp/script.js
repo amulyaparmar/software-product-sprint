@@ -42,7 +42,7 @@ async function getData() {
     var str = '<h2>Comments:</h2><ul>'
 
     data["comments"].forEach(function(comment) {
-    str += '<li>'+ comment + '</li>';
+        str += '<li>'+ comment + '</li>';
     }); 
 
     str += '</ul>';

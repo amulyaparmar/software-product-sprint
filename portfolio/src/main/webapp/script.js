@@ -50,3 +50,11 @@ async function getData() {
 
     console.log(data);
 }
+
+/** Creates a map and adds it to the page. */
+function createMap() {
+  console.log('creating the map');
+  const map = new google.maps.Map(
+      document.getElementById('map'),
+      {center: {lat: 42.5835083, lng: -82.9845588}, zoom: 16});
+}

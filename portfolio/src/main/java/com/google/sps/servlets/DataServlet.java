@@ -44,6 +44,17 @@ public class DataServlet extends HttpServlet {
     response.getWriter().println(json);
   }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    String newComment = request.getParameter("comment");
+    comments.add(newComment);
+    String json = convertToJson(comments);
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+
+    response.sendRedirect("/index.html");
+  }
+
   private String convertToJson(List<String> comments) {
     StringBuilder sb = new StringBuilder();
     
@@ -52,7 +63,6 @@ public class DataServlet extends HttpServlet {
 
     for(int i = 0; i < comments.size(); i++) {
         sb.append("\"" + comments.get(i).replaceAll("\"", "\'") + "\"");
-
         if (i != comments.size() - 1) {
             sb.append(",\n");
         }
@@ -60,7 +70,5 @@ public class DataServlet extends HttpServlet {
     sb.append("]}");
     return sb.toString();
   }
-
-
 }
 

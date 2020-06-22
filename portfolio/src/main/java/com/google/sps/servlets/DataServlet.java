@@ -13,7 +13,8 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
-
+import com.google.gson.Gson;
+import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +27,40 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+  private List<String> comments;
+
+  @Override
+  public void init() {
+      comments = new ArrayList<>();
+      comments.add("How did you create this gorgeous website");
+      comments.add("How did you join \" the SPS program");
+      comments.add("Sharing this website with some friends");
+  }
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello Amulya!</h1>");
+    String json = convertToJson(comments);
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
   }
+
+  private String convertToJson(List<String> comments) {
+    StringBuilder sb = new StringBuilder();
+    
+    sb.append("{");
+    sb.append("\"comments\": [\n");
+
+    for(int i = 0; i < comments.size(); i++) {
+        sb.append("\"" + comments.get(i).replaceAll("\"", "\'") + "\"");
+
+        if (i != comments.size() - 1) {
+            sb.append(",\n");
+        }
+    }
+    sb.append("]}");
+    return sb.toString();
+  }
+
+
 }
 

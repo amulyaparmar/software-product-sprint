@@ -37,6 +37,16 @@ async function getRandomQuote() {
 // Get data from the DataServlet
 async function getData() {
     const response = await fetch('/data');
-    const data = await response.text();
-    document.getElementById('data-container').innerHTML =  data;
+    const data = await response.json();
+    
+    var str = '<h2>Comments:</h2><ul>'
+
+    data["comments"].forEach(function(comment) {
+    str += '<li>'+ comment + '</li>';
+    }); 
+
+    str += '</ul>';
+    document.getElementById("data-container").innerHTML = str;
+
+    console.log(data);
 }

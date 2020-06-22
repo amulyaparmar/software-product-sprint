@@ -13,7 +13,8 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
-
+import com.google.gson.Gson;
+import com.google.sps.data.Comment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class DataServlet extends HttpServlet {
   public void init() {
       comments = new ArrayList<>();
       comments.add("How did you create this gorgeous website");
-      comments.add("How did you join the SPS program");
+      comments.add("How did you join \" the SPS program");
       comments.add("Sharing this website with some friends");
   }
 
@@ -50,7 +51,7 @@ public class DataServlet extends HttpServlet {
     sb.append("\"comments\": [\n");
 
     for(int i = 0; i < comments.size(); i++) {
-        sb.append(comments.get(i));
+        sb.append("\"" + comments.get(i).replaceAll("\"", "\'") + "\"");
 
         if (i != comments.size() - 1) {
             sb.append(",\n");
@@ -59,5 +60,7 @@ public class DataServlet extends HttpServlet {
     sb.append("]}");
     return sb.toString();
   }
+
+
 }
 

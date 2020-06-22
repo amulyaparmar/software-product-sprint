@@ -69,5 +69,5 @@ function getRandomQuoteUsingArrowFunctions() {
 async function getRandomQuoteUsingAsyncAwait() {
   const response = await fetch('/random-quote');
   const quote = await response.text();
-  document.getElementById('quote-container').innerText = quote;
+  document.getElementById('quote-container').innerText = quote + ' async';
 }

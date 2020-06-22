@@ -62,7 +62,7 @@ public class DataServlet extends HttpServlet {
     sb.append("\"comments\": [\n");
 
     for(int i = 0; i < comments.size(); i++) {
-        sb.append(comments.get(i));
+        sb.append("\"" + comments.get(i).replaceAll("\"", "\'") + "\"");
 
         if (i != comments.size() - 1) {
             sb.append(",\n");

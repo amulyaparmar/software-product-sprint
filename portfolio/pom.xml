@@ -42,8 +42,27 @@
           <!-- TODO: set project ID. -->
           <deploy.projectId>aparmar-sps-summer20</deploy.projectId>
           <deploy.version>1</deploy.version>
+
+          <environmentVariables>
+             <GOOGLE_API_KEY>AIzaSyBB4y2odE8-p5a9qHN0bAGQMY1xF-qOx4g</GOOGLE_API_KEY>
+          </environmentVariables>
+
         </configuration>
       </plugin>
     </plugins>
   </build>
 </project>
+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-failsafe-plugin</artifactId>
+    ...
+    <configuration>
+        <includes>
+            ...
+        </includes>
+        <environmentVariables>
+            <WSNSHELL_HOME>conf</WSNSHELL_HOME>
+        </environmentVariables>
+    </configuration>
+</plugin>

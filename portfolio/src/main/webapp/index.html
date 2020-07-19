@@ -6,8 +6,144 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBB4y2odE8-p5a9qHN0bAGQMY1xF-qOx4g"></script>    
     <script src="script.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
   <body>
+
+    <script type="text/javascript">
+    
+    </script>
+
+
+  <script>
+  /**
+   * Sample JavaScript code for calendar.freebusy.query
+   * See instructions for running APIs Explorer code samples locally:
+   * https://developers.google.com/explorer-help/guides/code_samples#javascript
+   */
+
+  function loadClient() {
+    gapi.client.setApiKey("AIzaSyBB4y2odE8-p5a9qHN0bAGQMY1xF-qOx4g");
+    return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/calendar/v3/rest")
+        .then(function() { console.log("GAPI client loaded for API"); },
+              function(err) { console.error("Error loading GAPI client for API", err); });
+  }
+  // Make sure the client is loaded before calling this method.
+  function execute() {
+    return gapi.client.calendar.freebusy.query({
+      "resource": {
+        "items": [
+          {
+            "id": "aparmar@sps-program.com"
+          },
+          {
+            "id": "parmar.amulya@gmail.com"
+          },
+          {
+            "id": "amulya@leasemagnets.com"
+          }
+        ],
+        "timeMin": "2020-07-06T00:00:00-0400",
+        "timeMax": "2020-07-06T22:00:00-0400",
+        "timeZone": "GMT-4:00"
+      }
+    })
+        .then(function(response) {
+                // Handle the results here (response.result has the parsed body).
+                console.log("Response", response);
+                console.log('Resp result', response.result);
+                console.log('Resp cals', response.result.calendars);
+                console.log('Resp cals amulya@leasemagnets.com', response.result.calendars["amulya@leasemagnets.com"].busy);
+                
+                var booked = [];
+
+                for(var cal in response.result.calendars) {
+                    console.log(cal);
+                    console.log(typeof cal);
+                    typeof cal;
+                    console.log(Object.prototype.toString.call(cal)); 
+                    Object.prototype.toString.call(cal);
+
+                    console.log(response.result.calendars[cal].busy);
+                    booked = booked.concat(response.result.calendars[cal].busy);
+                }
+
+                console.log('my availabities are:', booked);
+                console.log(booked);
+
+                var booked_sort = booked.sort(function (a, b) {
+                    return ('' + a.start).localeCompare(b.start);
+                })
+
+                console.log("sorted availabilities");
+                console.log(booked_sort);
+
+                //BOOKED AVAILABILITIES ALGO
+                // START IS AFTER PREVIOUS END
+                // END IS IS AFTER NEXT START 
+                // END IS IS AFTER NEXT START AND NEXT END 
+
+                // 3 PM - 4 PM 
+                // 4:30 PM - 6 PM 
+                // 5 PM - 5:30 PM
+
+                for (var i = 0; i <  booked_sort.length - 1; i++ ) {
+                    console.log('Currently observing: START: ', String(booked_sort[i].start), ' | END: ',  String(booked_sort[i].end));
+                    if ( booked_sort[i].end >= booked_sort[i+1].end ) {
+                        booked_sort.splice(i+1, 1);
+                        i--;
+                        continue;
+                    }
+                    else if (booked_sort[i].end >= booked_sort[i+1].start ) {
+                        booked_sort[i].end = booked_sort[i+1].end;
+                        booked_sort.splice(i+1, 1);
+                        i--;
+                        continue;
+                    }
+                }
+                console.log("second sorted availabilities");
+                console.log(booked_sort);
+            
+        var result = booked_sort.map(function(key) {
+            return ['Today', 'Busy', new Date(key.start), new Date(key.end)];
+        });
+
+        console.log('final result');
+        console.log(result);
+
+
+        google.charts.load("current", {packages:["timeline"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+
+            var container = document.getElementById('example5.1');
+            var chart = new google.visualization.Timeline(container);
+            var dataTable = new google.visualization.DataTable();
+            dataTable.addColumn({ type: 'string', id: 'Room' });
+            dataTable.addColumn({ type: 'string', id: 'Name' });
+            dataTable.addColumn({ type: 'date', id: 'Start' });
+            dataTable.addColumn({ type: 'date', id: 'End' });
+            dataTable.addRows(result);
+
+            var options = {
+            timeline: { colorByRowLabel: true },
+            hAxis: {
+            minValue: new Date("2020-07-06T00:00:00-04:00"),
+            maxValue: new Date("2020-07-06T24:00:00-04:00")
+            }
+            };
+
+            chart.draw(dataTable, options);
+        }
+
+              },
+              function(err) { console.error("Execute error", err); });
+  }
+  gapi.load("client");
+  </script>
+
+
     <div class="animated yt-loader"></div>
     <div id="content">
       <div class="section-intro"> 
@@ -72,6 +208,13 @@
 
     <center><h3>Where I live: </h3></center>
     <div id="map"> </div>
+
+   <button onclick="loadClient()">load</button>
+   <button onclick="execute()">execute</button>
+
+   <h2>Availabilities </h2>
+   <div id="availabililties"></div>
+   <div id="example5.1" style="height: 200px;"></div>
 
   </body>
 </html>

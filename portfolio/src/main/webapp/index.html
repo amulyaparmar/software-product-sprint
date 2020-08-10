@@ -31,6 +31,8 @@
   }
   // Make sure the client is loaded before calling this method.
   function execute() {
+    var DEBUG = false;
+
     return gapi.client.calendar.freebusy.query({
       "resource": {
         "items": [
@@ -51,33 +53,36 @@
     })
         .then(function(response) {
                 // Handle the results here (response.result has the parsed body).
-                console.log("Response", response);
-                console.log('Resp result', response.result);
-                console.log('Resp cals', response.result.calendars);
-                console.log('Resp cals amulya@leasemagnets.com', response.result.calendars["amulya@leasemagnets.com"].busy);
+
+                if (DEBUG) {
+                  console.log("Response", response);
+                  console.log('Resp result', response.result);
+                  console.log('Resp cals', response.result.calendars);
+                  console.log('Resp cals amulya@leasemagnets.com', response.result.calendars["amulya@leasemagnets.com"].busy);
+                };
                 
                 var booked = [];
 
                 for(var cal in response.result.calendars) {
-                    console.log(cal);
-                    console.log(typeof cal);
+                    if (DEBUG) if (DEBUG) console.log(cal);
+                    if (DEBUG) console.log(typeof cal);
                     typeof cal;
-                    console.log(Object.prototype.toString.call(cal)); 
+                    if (DEBUG) console.log(Object.prototype.toString.call(cal)); 
                     Object.prototype.toString.call(cal);
 
-                    console.log(response.result.calendars[cal].busy);
+                    if (DEBUG) console.log(response.result.calendars[cal].busy);
                     booked = booked.concat(response.result.calendars[cal].busy);
                 }
 
-                console.log('my availabities are:', booked);
-                console.log(booked);
+                if (DEBUG) console.log('my availabities are:', booked);
+                if (DEBUG) console.log(booked);
 
                 var booked_sort = booked.sort(function (a, b) {
                     return ('' + a.start).localeCompare(b.start);
                 })
 
-                console.log("sorted availabilities");
-                console.log(booked_sort);
+                if (DEBUG) console.log("sorted availabilities");
+                if (DEBUG) console.log(booked_sort);
 
                 //BOOKED AVAILABILITIES ALGO
                 // START IS AFTER PREVIOUS END
@@ -88,8 +93,53 @@
                 // 4:30 PM - 6 PM 
                 // 5 PM - 5:30 PM
 
-                for (var i = 0; i <  booked_sort.length - 1; i++ ) {
-                    console.log('Currently observing: START: ', String(booked_sort[i].start), ' | END: ',  String(booked_sort[i].end));
+                /*
+
+                Booked Sort will be a list of returned calls to the Google Cal free busy query which returns in teh following formsat
+
+                {
+                  "kind": "calendar#freeBusy",
+                  "timeMin": datetime,
+                  "timeMax": datetime,
+                  "groups": {
+                    (key): {
+                      "errors": [
+                        {
+                          "domain": string,
+                          "reason": string
+                        }
+                      ],
+                      "calendars": [
+                        string
+                      ]
+                    }
+                  },
+                  "calendars": {
+                    (key): {
+                      "errors": [
+                        {
+                          "domain": string,
+                          "reason": string
+                        }
+                      ],
+                      "busy": [
+                        {
+                          "start": datetime,
+                          "end": datetime
+                        }
+                      ]
+                    }
+                  }
+                }
+
+
+
+
+
+                */
+
+                for (var i = 0; i < booked_sort.length - 1; i++) {
+                    if (DEBUG) console.log('Currently observing: START: ', String(booked_sort[i].start), ' | END: ',  String(booked_sort[i].end));
                     if ( booked_sort[i].end >= booked_sort[i+1].end ) {
                         booked_sort.splice(i+1, 1);
                         i--;
@@ -102,15 +152,15 @@
                         continue;
                     }
                 }
-                console.log("second sorted availabilities");
-                console.log(booked_sort);
+                if (DEBUG) console.log("finished sorted availabilities");
+                if (DEBUG) console.log(booked_sort);
             
         var result = booked_sort.map(function(key) {
             return ['Today', 'Busy', new Date(key.start), new Date(key.end)];
         });
 
-        console.log('final result');
-        console.log(result);
+        if (DEBUG) console.log('final result');
+        if (DEBUG) console.log(result);
 
 
         google.charts.load("current", {packages:["timeline"]});
@@ -127,11 +177,11 @@
             dataTable.addRows(result);
 
             var options = {
-            timeline: { colorByRowLabel: true },
-            hAxis: {
-            minValue: new Date("2020-07-06T00:00:00-04:00"),
-            maxValue: new Date("2020-07-06T24:00:00-04:00")
-            }
+              timeline: { colorByRowLabel: true },
+              hAxis: {
+                minValue: new Date("2020-07-06T00:00:00-04:00"),
+                maxValue: new Date("2020-07-06T24:00:00-04:00")
+              }
             };
 
             chart.draw(dataTable, options);
@@ -167,9 +217,7 @@
     <script>
         window.onload = function() {
             getRandomQuote();
-            console.log('tried to run random function');
             getData();
-            console.log('get data from servlet');
             createMap();
         };
         
